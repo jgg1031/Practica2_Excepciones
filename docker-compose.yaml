@@ -1,0 +1,14 @@
+services:
+  mysql-cs2:
+    image: mysql:8.0
+    container_name: basicosd_mysql
+    environment:
+      MYSQL_DATABASE: basicosd
+      MYSQL_ROOT_PASSWORD: eneas2805
+    ports:
+      - "3506:3306"
+    volumes:
+      - mysql_data_cs2:/var/lib/mysql # Aquí se guardan tus skins para que no se borren
+
+volumes:
+  mysql_data_cs2:

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 HUB - Catálogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root { --cs-orange: #f59e0b; --cs-dark: #0a0a0c; --glass-bg: rgba(20, 20, 25, 0.6); --glass-border: rgba(255, 255, 255, 0.08); }
+        body { background-color: var(--cs-dark); color: #ffffff; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at 50% 0%, #1f1b2e 0%, var(--cs-dark) 100%); margin: 0; overflow-x: hidden; }
+        .wrapper { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(15px); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; padding-top: 2rem; position: sticky; top: 0; }
+        .sidebar .brand { font-size: 2rem; font-weight: 900; text-align: center; margin-bottom: 3rem; text-transform: uppercase; }
+        .sidebar .brand span { color: var(--cs-orange); }
+        .sidebar a, .sidebar button { color: #888; text-decoration: none; padding: 18px 30px; font-weight: 600; display: flex; align-items: center; gap: 15px; transition: 0.3s; background: none; border: none; width: 100%; text-align: left; }
+        .sidebar a:hover, .sidebar a.active, .sidebar button:hover { color: #fff; background: linear-gradient(90deg, rgba(245,158,11,0.1) 0%, transparent 100%); }
+        .sidebar a.active { color: #fff; border-left: 4px solid var(--cs-orange); }
+        .main-content { flex-grow: 1; padding: 3rem; display: flex; flex-direction: column; align-items: center; }
+        .search-bar { width: 100%; max-width: 600px; background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 50px; padding: 15px 30px; color: #fff; transition: 0.4s; }
+        .search-bar:focus { outline: none; border-color: var(--cs-orange); box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+        .skin-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; text-decoration: none; transition: 0.4s; text-align: center; display: block; height: 100%; }
+        .skin-card:hover { transform: translateY(-10px); border-color: var(--cs-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .btn-cs2-outline { color: var(--cs-orange); border: 1px solid var(--cs-orange); border-radius: 30px; padding: 10px 25px; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <nav class="sidebar">
+        <div class="brand">CS2<span>HUB</span></div>
+        <a href="/" class="active"><i class="bi bi-grid-1x2-fill"></i> Catálogo</a>
+        <a href="/inventory"><i class="bi bi-backpack-fill"></i> Mi Mochila</a>
+        <!-- Botón de Logout -->
+        <form th:action="@{/logout}" method="post" class="mt-auto mb-4">
+            <button type="submit" class="text-danger"><i class="bi bi-box-arrow-left"></i> Salir del Sistema</button>
+        </form>
+    </nav>
+
+    <main class="main-content">
+        <div class="text-center mb-5 w-100">
+            <h1 class="display-3 fw-bold mb-3">Premium Market</h1>
+            <form action="/" method="get" class="d-flex justify-content-center">
+                <input type="text" name="query" class="search-bar" placeholder="Buscar AWP, AK-47, Cuchillos..." th:value="${busqueda}">
+            </form>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 row-cols-xl-4 g-4 w-100" th:if="${skins}">
+            <div class="col" th:each="skin : ${skins}">
+                <a th:href="@{/skin(nombre=${skin.baseName}, foto=${skin.iconUrl})}" class="skin-card">
+                    <img th:src="'https://community.akamai.steamstatic.com/economy/image/' + ${skin.iconUrl}" class="img-fluid mb-3" style="max-height: 140px;">
+                    <h6 class="text-white" th:text="${skin.baseName}">Arma</h6>
+                    <div class="btn-cs2-outline mt-3" style="font-size: 0.8rem;">Ver Opciones</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-5" th:if="${totalPages > 1}">
+            <a th:href="@{/(query=${busqueda}, page=${currentPage - 1})}" class="btn-cs2-outline" th:if="${currentPage > 1}">Anterior</a>
+            <span class="mx-3 text-secondary">Página <span th:text="${currentPage}">1</span> de <span th:text="${totalPages}">1</span></span>
+            <a th:href="@{/(query=${busqueda}, page=${currentPage + 1})}" class="btn-cs2-outline" th:if="${currentPage < totalPages}">Siguiente</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

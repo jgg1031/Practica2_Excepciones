@@ -1,0 +1,8 @@
+juancarlos\gallego\cskins\config\SecurityConfig.class
+juancarlos\gallego\cskins\controller\WebController.class
+juancarlos\gallego\cskins\CskinsApplication.class
+juancarlos\gallego\cskins\controller\PriceController.class
+juancarlos\gallego\cskins\service\PriceService.class
+juancarlos\gallego\cskins\model\Item.class
+juancarlos\gallego\cskins\dto\SteamPriceResponse.class
+juancarlos\gallego\cskins\repository\ItemRepository.class
